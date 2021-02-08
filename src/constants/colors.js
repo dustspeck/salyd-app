@@ -42,7 +42,7 @@ export const TOPPINGS = {
 
 export const GRAY = {
   T1: '#f8f9fa',
-  T2: '#e9ecef',
+  T2: '#f6f7f8',
   T3: '#dee2e6',
   T4: '#ced4da',
   T5: '#adb5bd',
@@ -51,4 +51,10 @@ export const GRAY = {
   T8: '#343a40',
   T9: '#212529',
   T10: '#000000',
+};
+
+export const TYPE = {
+  VEG: '#007f5f',
+  NON: '#d00000',
+  EGG: '#ffba08',
 };
