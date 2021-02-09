@@ -31,7 +31,7 @@ const CounterBtn = ({onChange, max}) => {
         <TouchableOpacity onPress={handleSub}>
           <View
             style={{
-              backgroundColor: PRIMARY,
+              backgroundColor: PRIMARY + '55',
               padding: 5,
               borderTopLeftRadius: ROUNDNESS / 2,
               borderBottomLeftRadius: ROUNDNESS / 2,
@@ -67,7 +67,7 @@ const CounterBtn = ({onChange, max}) => {
         <TouchableOpacity onPress={handleAdd}>
           <View
             style={{
-              backgroundColor: PRIMARY,
+              backgroundColor: PRIMARY + '55',
               padding: 5,
               borderTopRightRadius: ROUNDNESS / 2,
               borderBottomRightRadius: ROUNDNESS / 2,

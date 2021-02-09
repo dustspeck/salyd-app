@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,8 @@ import {
   Platform,
   Dimensions,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {LEAVE_ORDER} from '../../constants/strings';
@@ -19,6 +19,36 @@ import MenuList from '../../components/Order/MenuList';
 
 const {width, height} = Dimensions.get('screen');
 
+const data = [
+  {
+    id: 0,
+    name: 'Pav Bhaji (1 Plate)',
+    type: 0,
+    description:
+      'Leo vel orci porta non pulvinar neque laoreet. Sed blandit libero volutpat sed. Eu volutpat odio facilisis mauris. Pellentesque id nibh tortor id aliquet lectus.',
+    price: 45,
+    max: 3,
+  },
+  {
+    id: 1,
+    name: 'Egg Roll (Serves 1)',
+    type: 1,
+    description:
+      'Leo vel orci porta non pulvinar neque laoreet. Sed blandit libero volutpat sed. Eu volutpat odio facilisis mauris. Pellentesque id nibh tortor id aliquet lectus.',
+    price: 35,
+    max: 5,
+  },
+  {
+    id: 2,
+    name: 'Murgh Mussallam (4 pcs.)',
+    type: 2,
+    description:
+      'Leo vel orci porta non pulvinar neque laoreet. Sed blandit libero volutpat sed. Eu volutpat odio facilisis mauris. Pellentesque id nibh tortor id aliquet lectus.',
+    price: 175,
+    max: 4,
+  },
+];
+
 const OrderScene = ({navigation}) => {
   const [scrollYPosition, setScrollYPosition] = useState(0);
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -26,7 +56,9 @@ const OrderScene = ({navigation}) => {
   const [headingTint, setHeadingTint] = useState(255);
 
   const handleOnScroll = (event) => {
-    setScrollYPosition(event.nativeEvent.contentOffset.y);
+    if (event.nativeEvent.contentOffset.y < height / 2) {
+      setScrollYPosition(event.nativeEvent.contentOffset.y);
+    }
   };
 
   const handleBack = () => {
@@ -100,11 +132,9 @@ const OrderScene = ({navigation}) => {
           </Heading>
         </View>
       </View>
-      {/* <View style={{margin: 10, backgroundColor: 'red'}}> */}
       <SceneBuilder>
-        <MenuList />
+        <MenuList data={data} />
       </SceneBuilder>
-      {/* </View> */}
     </ScrollView>
   );
 };

@@ -63,8 +63,8 @@ const MenuItem = ({data}) => {
           resizeMode="cover"
           resizeMethod="resize"
           style={{
-            width: width / 3.75,
-            height: width / 3.75,
+            width: width / 4,
+            height: width / 4,
             borderRadius: ROUNDNESS / 2,
           }}
         />
@@ -81,9 +81,9 @@ const MenuItem = ({data}) => {
               justifyContent: 'space-around',
             }}>
             <Text style={{fontSize: width / 26}}>
-              {data.name.length > 16
-                ? data.name.toUpperCase().substr(0, 14) + '...'
-                : data.name.toUpperCase()}
+              {data.name.length > 35
+                ? data.name.substr(0, 35) + '...'
+                : data.name}
             </Text>
 
             <Text
@@ -92,9 +92,11 @@ const MenuItem = ({data}) => {
                 width: width / 3.5,
                 textAlignVertical: 'bottom',
                 color: GRAY.T5,
+                fontSize: width / 32,
               }}>
               {data.description.substr(0, 30) + ' ...'}
             </Text>
+
             <View style={{flexDirection: 'row', margin: 5}}>
               {renderType(data.type)}
             </View>
@@ -111,7 +113,9 @@ const MenuItem = ({data}) => {
               </Text>
               <Text style={{fontSize: width / 22}}>{data.price}</Text>
             </View>
-            <CounterBtn max={data.max} />
+            <View style={{position: 'absolute', bottom: 0}}>
+              <CounterBtn max={data.max} />
+            </View>
           </View>
         </View>
       </View>
