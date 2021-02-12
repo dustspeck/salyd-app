@@ -25,20 +25,28 @@ const ItemModal = ({showModal, setShowModal, data, renderType}) => {
 
   useEffect(() => {
     setTimeout(() => {
-      cardRef.current.measure((_ox, _oy, _w, h) => {
-        setCardHeight(h);
-      });
+      if (cardRef.current) {
+        cardRef.current.measure((_ox, _oy, _w, h) => {
+          setCardHeight(h);
+        });
+      }
     }, 1);
 
     setTimeout(() => {
       let oH = height / 4 + 100;
       setOffsetHeight(oH);
-      modalRef.current.scrollTo({
-        y: oH,
-        animated: true,
-      });
-    }, 100);
+      if (modalRef.current) {
+        modalRef.current.scrollTo({
+          y: oH,
+          animated: true,
+        });
+      }
+    }, 50);
   }, []);
+
+  useEffect(() => {
+    console.log(scrollSwitch);
+  }, [scrollSwitch]);
 
   const handleOnScroll = (event) => {
     if (event.nativeEvent.contentOffset.y <= 0) {
@@ -51,7 +59,7 @@ const ItemModal = ({showModal, setShowModal, data, renderType}) => {
   const handleCloseTouch = () => {
     setTimeout(() => {
       modalRef.current.scrollTo({y: 0, animated: true});
-    }, 100);
+    }, 1);
   };
   return (
     <Modal
