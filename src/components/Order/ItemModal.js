@@ -28,25 +28,20 @@ const ItemModal = ({showModal, setShowModal, data, renderType}) => {
       if (cardRef.current) {
         cardRef.current.measure((_ox, _oy, _w, h) => {
           setCardHeight(h);
+          setTimeout(() => {
+            let oH = height / 4 + 100;
+            setOffsetHeight(oH);
+            if (modalRef.current) {
+              modalRef.current.scrollTo({
+                y: oH,
+                animated: true,
+              });
+            }
+          }, 50);
         });
       }
     }, 1);
-
-    setTimeout(() => {
-      let oH = height / 4 + 100;
-      setOffsetHeight(oH);
-      if (modalRef.current) {
-        modalRef.current.scrollTo({
-          y: oH,
-          animated: true,
-        });
-      }
-    }, 50);
   }, []);
-
-  useEffect(() => {
-    console.log(scrollSwitch);
-  }, [scrollSwitch]);
 
   const handleOnScroll = (event) => {
     if (event.nativeEvent.contentOffset.y <= 0) {
@@ -134,8 +129,6 @@ const ItemModal = ({showModal, setShowModal, data, renderType}) => {
                     paddingTop: 10,
                     color: GRAY.T5,
                   }}>
-                  {data.description}
-                  {data.description}
                   {data.description}
                 </Text>
                 <View

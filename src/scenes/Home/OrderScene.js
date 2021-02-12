@@ -12,10 +12,11 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {LEAVE_ORDER} from '../../constants/strings';
-import OutletHeader from '../../components/Order/OutletHeader';
+import OutletHero from '../../components/Order/OutletHero';
 import {SceneBuilder, Header, Heading} from '../../components/Shared';
 import {GRAY} from '../../constants/colors';
 import MenuList from '../../components/Order/MenuList';
+import OutletHeader from '../../components/Order/OutletHeader';
 
 const {width, height} = Dimensions.get('screen');
 
@@ -98,42 +99,31 @@ const OrderScene = ({navigation}) => {
 
   return (
     <ScrollView onScroll={handleOnScroll} stickyHeaderIndices={[1]}>
-      <OutletHeader
+      <OutletHero
         yOffset={scrollYPosition}
         onParallaxImageScrolled={handleParallaxImageScrolled}
         headingTint={headingTint}
         setHeadingTint={setHeadingTint}
       />
+
       <View
         style={{
           position: 'absolute',
           width,
           backgroundColor: headerColor,
         }}>
-        <View style={{marginTop: 30, flexDirection: 'row'}}>
-          <TouchableOpacity onPress={handleBack} activeOpacity={0.75}>
-            <Icon
-              name="chevron-back"
-              size={28}
-              style={{
-                margin: 10,
-                color: `rgb(${headingTint},${headingTint},${headingTint})`,
-              }}
-            />
-          </TouchableOpacity>
-
-          <Heading
-            style={{
-              fontSize: width / 20,
-              color: `rgb(${headingTint},${headingTint},${headingTint})`,
-            }}
-            viewStyle={{margin: 10}}>
-            {hasScrolled ? 'Indian Food Hotel' : 'Welcome to'}
-          </Heading>
-        </View>
+        <OutletHeader
+          headerColor={headerColor}
+          handleBack={handleBack}
+          headingTint={headingTint}
+          hasScrolled={hasScrolled}
+        />
       </View>
+
       <SceneBuilder>
         <MenuList data={data} />
+
+        <View style={{height: height / 5}} />
       </SceneBuilder>
     </ScrollView>
   );
