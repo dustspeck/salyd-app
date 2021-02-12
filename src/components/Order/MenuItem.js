@@ -1,15 +1,31 @@
-import React from 'react';
-import {View, Text, Image, Dimensions} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  Modal,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {CounterBtn} from '../Shared';
 import IMAGE from '../../assets/images/bg/login.webp';
 import {ROUNDNESS} from '../../constants/theme';
-import {GRAY, TYPE} from '../../constants/colors';
+import {GRAY, TYPE, PRIMARY, TOPPINGS} from '../../constants/colors';
+import {ORDER} from '../../constants/strings';
+import {ScrollView} from 'react-native-gesture-handler';
+import ItemModal from './ItemModal';
 
 const {width, height} = Dimensions.get('screen');
 
 const MenuItem = ({data}) => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleItemPress = () => {
+    setShowModal(true);
+  };
+
   const renderType = (type) => {
     let icon = 'help';
     let text = '';
@@ -57,17 +73,27 @@ const MenuItem = ({data}) => {
 
   return (
     <View>
-      <View style={{flexDirection: 'row', margin: 5, marginVertical: 10}}>
-        <Image
-          source={IMAGE}
-          resizeMode="cover"
-          resizeMethod="resize"
-          style={{
-            width: width / 4,
-            height: width / 4,
-            borderRadius: ROUNDNESS / 2,
-          }}
+      {showModal && (
+        <ItemModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          data={data}
+          renderType={renderType}
         />
+      )}
+      <View style={{flexDirection: 'row', margin: 5, marginVertical: 10}}>
+        <TouchableOpacity onPress={handleItemPress} activeOpacity={0.75}>
+          <Image
+            source={IMAGE}
+            resizeMode="cover"
+            resizeMethod="resize"
+            style={{
+              width: width / 4,
+              height: width / 4,
+              borderRadius: ROUNDNESS / 2,
+            }}
+          />
+        </TouchableOpacity>
         <View
           style={{
             flexDirection: 'row',
@@ -80,40 +106,68 @@ const MenuItem = ({data}) => {
               marginHorizontal: 15,
               justifyContent: 'space-around',
             }}>
-            <Text style={{fontSize: width / 26}}>
-              {data.name.length > 35
-                ? data.name.substr(0, 35) + '...'
-                : data.name}
-            </Text>
+            <TouchableOpacity onPress={handleItemPress} activeOpacity={0.75}>
+              <Text style={{fontSize: width / 26}}>
+                {data.name.length > 35
+                  ? data.name.substr(0, 35) + '...'
+                  : data.name}
+              </Text>
 
-            <Text
-              style={{
-                marginHorizontal: 5,
-                width: width / 3.5,
-                textAlignVertical: 'bottom',
-                color: GRAY.T5,
-                fontSize: width / 32,
-              }}>
-              {data.description.substr(0, 30) + ' ...'}
-            </Text>
+              <Text
+                style={{
+                  marginHorizontal: 5,
+                  width: width / 3.5,
+                  textAlignVertical: 'bottom',
+                  color: GRAY.T5,
+                  fontSize: width / 32,
+                }}>
+                {data.description.substr(0, 30) + ' ...'}
+              </Text>
 
-            <View style={{flexDirection: 'row', margin: 5}}>
-              {renderType(data.type)}
-            </View>
+              <View style={{flexDirection: 'row', margin: 5}}>
+                {renderType(data.type)}
+              </View>
+            </TouchableOpacity>
           </View>
           <View
             style={{
               justifyContent: 'space-between',
               alignItems: 'flex-end',
+              minWidth: width / 6,
               margin: 10,
             }}>
             <View style={{flexDirection: 'row'}}>
-              <Text style={{textAlignVertical: 'bottom', margin: 5}}>
+              <Text
+                style={{
+                  margin: 5,
+                  color: GRAY.T6,
+                  textAlignVertical: 'bottom',
+                }}>
                 {'₹'}
               </Text>
-              <Text style={{fontSize: width / 22}}>{data.price}</Text>
+              <Text
+                style={{
+                  fontSize: width / 22,
+                  color: GRAY.T6,
+                }}>
+                {data.price}
+              </Text>
             </View>
-            <View style={{position: 'absolute', bottom: 0}}>
+            <View
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                alignItems: 'flex-end',
+              }}>
+              <Text
+                style={{
+                  fontSize: width / 48,
+                  textAlign: 'center',
+                  color: GRAY.T10,
+                  marginVertical: 5,
+                }}>
+                {ORDER.REPEATING_ITEM}
+              </Text>
               <CounterBtn max={data.max} />
             </View>
           </View>

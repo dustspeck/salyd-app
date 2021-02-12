@@ -59,6 +59,10 @@ export const LOG_OUT = {
   CANCEL: 'Cancel',
 };
 
+export const ORDER = {
+  REPEATING_ITEM: 'Already Added',
+};
+
 export const LEAVE_ORDER = {
   HEADING: 'Are you sure?',
   BODY: 'Your cart has items. Leaving will empty your cart.',
