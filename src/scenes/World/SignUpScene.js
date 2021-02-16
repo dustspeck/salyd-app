@@ -15,6 +15,7 @@ import {
 import {StackActions} from '@react-navigation/native';
 import {enableScreens} from 'react-native-screens';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {gql, useQuery, useMutation} from '@apollo/client';
 
 //Components
 import {
@@ -26,7 +27,7 @@ import {
 } from '../../components/Shared';
 
 //Constants
-import {SIGN_UP} from '../../constants/strings';
+import {SIGN_UP, REGEX} from '../../constants/strings';
 import {GRAY} from '../../constants/colors';
 
 //Assets
@@ -38,18 +39,63 @@ const {height, width} = Dimensions.get('window');
 enableScreens();
 const SignUpScene = ({navigation}) => {
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, isSubmitting] = useState(false);
 
   const handleNameChange = (text) => setName(text);
-  const handlePhoneChange = (text) => setPhone(text);
+  const handlePhoneChange = (text) => setPhone(parseInt(text));
   const handleEmailChange = (text) => setEmail(text);
   const handlePasswordChange = (text) => setPassword(text);
 
+  const REGISTER_USER = gql`
+    mutation RegisterUser(
+      $name: String!
+      $email: String!
+      $phone: Float!
+      $password: String!
+    ) {
+      registerUser(
+        input: {name: $name, email: $email, phone: $phone, password: $password}
+      ) {
+        _id
+        name
+      }
+    }
+  `;
+
+  const [registerUser] = useMutation(REGISTER_USER, {
+    onCompleted(data) {
+      isSubmitting(false);
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Signup Successful', ToastAndroid.SHORT);
+      }
+      navigation.dispatch(StackActions.replace('LoginScene'));
+    },
+    onError(error) {
+      isSubmitting(false);
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(error.message, ToastAndroid.SHORT);
+      }
+    },
+  });
+
   const handleSignUp = () => {
-    navigation.dispatch(StackActions.replace('Home'));
+    if (!name || !email || !phone || !password) {
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Field cannot be empty', ToastAndroid.SHORT);
+      }
+    } else {
+      if (!email.match(REGEX.EMAIL)) {
+        if (Platform.OS === 'android') {
+          ToastAndroid.show('Invalid Email', ToastAndroid.SHORT);
+        }
+      } else {
+        isSubmitting(true);
+        registerUser({variables: {name, email, phone, password}});
+      }
+    }
   };
 
   const handleLogin = () => {
@@ -100,7 +146,7 @@ const SignUpScene = ({navigation}) => {
               label="Phone Number"
               value={phone}
               onChangeText={handlePhoneChange}
-              keyboardType="number-pad"
+              keyboardType={'numeric'}
             />
             <TextBox
               label="Email"
