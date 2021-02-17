@@ -17,6 +17,7 @@ import {enableScreens} from 'react-native-screens';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {gql, useMutation} from '@apollo/client';
 
 //State
 import {GlobalContext} from '../../context/GlobalState';
@@ -53,55 +54,74 @@ const LoginScene = ({navigation}) => {
   const handleEmailChange = (text) => setEmail(text);
   const handlePasswordChange = (text) => setPassword(text);
 
+  const LOGIN_USER = gql`
+    mutation LoginUser($email: String!, $password: String!) {
+      loginUser(input: {email: $email, password: $password}) {
+        message
+        user {
+          _id
+          name
+        }
+        token
+      }
+    }
+  `;
+
   const handleForgot = () => {
     navigation.navigate('ForgotPasswordScene');
   };
+
   const handleSignUp = () => {
     navigation.dispatch(StackActions.replace('SignUpScene'));
   };
+
+  const [loginUser] = useMutation(LOGIN_USER, {
+    async onCompleted(data) {
+      console.log(data, 'data');
+
+      //Updating values in async storage
+      updateUser(data.loginUser.user);
+      updateToken(data.loginUser.token);
+
+      //Updating AsyncStorage for persistence
+      await AsyncStorage.setItem('token', data.loginUser.token);
+      await AsyncStorage.setItem('user', JSON.stringify(data.loginUser.user));
+      isSubmitting(false);
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Login Successful', ToastAndroid.SHORT);
+      }
+      navigation.dispatch(StackActions.replace('Home'));
+    },
+    onError(error) {
+      isSubmitting(false);
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(error.message, ToastAndroid.SHORT);
+      }
+    },
+  });
 
   const handleLogin = () => {
     if (email) {
       if (password) {
         if (email.match(REGEX.EMAIL)) {
           isSubmitting(true);
-          console.log('isSubmitting(true)');
-          Axios.post(`${apiUrl}/signin`, {
-            email: email,
-            password: password,
-          })
-            .then(async (res) => {
-              console.log('res: ' + JSON.stringify(res.data));
-              updateUser(res.data.user);
-              updateToken(res.data.token);
-
-              //Updating AsyncStorage for persistence
-              await AsyncStorage.setItem('token', res.data.token);
-              await AsyncStorage.setItem('user', JSON.stringify(res.data.user));
-              isSubmitting(false);
-              console.log('isSubmitting(false)');
-              if (Platform.OS === 'android')
-                ToastAndroid.show('Login Successful', ToastAndroid.SHORT);
-              navigation.dispatch(StackActions.replace('Home'));
-            })
-            .catch((err) => {
-              isSubmitting(false);
-              console.log('isSubmitting(false)');
-              console.log(err);
-              if (Platform.OS === 'android')
-                ToastAndroid.show('Error Occurred', ToastAndroid.SHORT);
-            });
+          loginUser({
+            variables: {email, password},
+          });
         } else {
-          if (Platform.OS === 'android')
+          if (Platform.OS === 'android') {
             ToastAndroid.show('Invalid Email', ToastAndroid.SHORT);
+          }
         }
       } else {
-        if (Platform.OS === 'android')
+        if (Platform.OS === 'android') {
           ToastAndroid.show('Password can not be empty', ToastAndroid.SHORT);
+        }
       }
     } else {
-      if (Platform.OS === 'android')
+      if (Platform.OS === 'android') {
         ToastAndroid.show('Email can not be empty', ToastAndroid.SHORT);
+      }
     }
   };
 

@@ -7,7 +7,7 @@ import {ApolloProvider} from '@apollo/react-hooks';
 import {GRAY} from './src/constants/colors';
 
 const client = new ApolloClient({
-  uri: 'http://848e05ed328c.ngrok.io',
+  uri: 'http://e3a07b67d0d2.ngrok.io ',
   cache: new InMemoryCache(),
 });
 
