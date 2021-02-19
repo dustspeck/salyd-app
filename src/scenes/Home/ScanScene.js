@@ -23,6 +23,9 @@ import TableIDInput from '../../components/Scan/TableIDInput';
 import {SceneLoader} from '../../components/Shared';
 import {TABLE_ID_LENGTH} from '../../constants/config';
 import {REGEX, SCAN} from '../../constants/strings';
+import {gql, useMutation} from '@apollo/client';
+import {StackActions} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('screen');
 
@@ -67,54 +70,66 @@ const ScanScene = ({navigation}) => {
     GlobalContext,
   );
 
+  //Mutation definition
+  const NEW_ROOM = gql`
+    mutation NewRoom($tableId: Int!) {
+      newRoom(tableId: $tableId) {
+        room {
+          _id
+        }
+      }
+    }
+  `;
+
   const handleTableId = (tid) => {
-    console.log(tid);
     if (
       tid.match(new RegExp(REGEX.TABLE_ID.replace('~num~', TABLE_ID_LENGTH)))
     ) {
       setTableId(tid);
-      createTable();
+      createTable(parseInt(tid));
     } else {
       ToastAndroid.show(SCAN.TID_ERROR, ToastAndroid.SHORT);
     }
   };
 
-  const createTable = async () => {
+  const [newRoom] = useMutation(NEW_ROOM, {
+    async onCompleted(data) {
+      console.log(data, 'data');
+
+      const {room} = data.newRoom;
+      console.log(tableId, 'in onCompleted');
+
+      //Todo: Populating restuarant fields on server side
+      //Meanwhile can fetch resturant details from this restroId
+
+      const restaurantId = tableId.toString().substring(0, 6);
+
+      updateTable(tableId);
+      updateRoom(room._id);
+      await AsyncStorage.setItem('tableId', tableId.toString());
+      await AsyncStorage.setItem('roomId', room._id.toString());
+
+      isSubmitting(false);
+
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Room made successfully', ToastAndroid.SHORT);
+      }
+      navigation.dispatch(StackActions.replace('OrderScene'));
+    },
+    onError(error) {
+      isSubmitting(false);
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(error.message, ToastAndroid.SHORT);
+      }
+    },
+  });
+
+  const createTable = async (tid) => {
     // TODO: Check this again
     isSubmitting(true);
-
-    requestCreateTable(token, tableId)
-      .then(async (res) => {
-        console.log(res);
-        if (res.data.error) {
-          Alert.alert('Sorry, Incorrect Table Id');
-        } else {
-          updateTable(res.data._id);
-          updateRoom(res.data.roomId);
-          await AsyncStorage.setItem('tableId', res.data._id.toString());
-          await AsyncStorage.setItem('roomId', res.data.roomId.toString());
-          isSubmitting(false);
-          // props.navigation.dispatch(
-          //     CommonActions.reset({
-          //         index: 0,
-          //         routes: [
-          //             {
-          //                 name: 'Table',
-          //                 //TODO: remove this
-          //                 params: { roomId: res.data.roomId }
-          //             },
-          //         ],
-          //     })
-          // );
-          console.log('VALID: ' + res.data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        isSubmitting(false);
-      });
+    newRoom({
+      variables: {tableId: tid},
+    });
   };
 
   const handleLogoPress = () => setIsDim(!isDim);
