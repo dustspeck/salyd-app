@@ -76,6 +76,19 @@ const ScanScene = ({navigation}) => {
       newRoom(tableId: $tableId) {
         room {
           _id
+          tableOf {
+            _id
+            address
+            name
+            menu {
+              _id
+              name
+              price
+              maxQuantity
+              description
+              category
+            }
+          }
         }
       }
     }
@@ -94,10 +107,9 @@ const ScanScene = ({navigation}) => {
 
   const [newRoom] = useMutation(NEW_ROOM, {
     async onCompleted(data) {
-      console.log(data, 'data');
-
       const {room} = data.newRoom;
-      console.log(tableId, 'in onCompleted');
+
+      console.log('room', room);
 
       //Todo: Populating restuarant fields on server side
       //Meanwhile can fetch resturant details from this restroId
@@ -114,7 +126,9 @@ const ScanScene = ({navigation}) => {
       if (Platform.OS === 'android') {
         ToastAndroid.show('Room made successfully', ToastAndroid.SHORT);
       }
-      navigation.dispatch(StackActions.replace('OrderScene'));
+      navigation.dispatch(
+        StackActions.replace('OrderScene', {restro: room.tableOf}),
+      );
     },
     onError(error) {
       isSubmitting(false);
@@ -125,7 +139,6 @@ const ScanScene = ({navigation}) => {
   });
 
   const createTable = async (tid) => {
-    // TODO: Check this again
     isSubmitting(true);
     newRoom({
       variables: {tableId: tid},

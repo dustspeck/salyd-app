@@ -20,37 +20,39 @@ import OutletHeader from '../../components/Order/OutletHeader';
 
 const {width, height} = Dimensions.get('screen');
 
-const data = [
-  {
-    id: 0,
-    name: 'Pav Bhaji (1 Plate)',
-    type: 0,
-    description:
-      'Leo vel orci porta non pulvinar neque laoreet. Sed blandit libero volutpat sed. Eu volutpat odio facilisis mauris. Pellentesque id nibh tortor id aliquet lectus.',
-    price: 45,
-    max: 3,
-  },
-  {
-    id: 1,
-    name: 'Egg Roll (Serves 1)',
-    type: 1,
-    description:
-      'Leo vel orci porta non pulvinar neque laoreet. Sed blandit libero volutpat sed. Eu volutpat odio facilisis mauris. Pellentesque id nibh tortor id aliquet lectus.',
-    price: 35,
-    max: 5,
-  },
-  {
-    id: 2,
-    name: 'Murgh Mussallam (4 pcs.)',
-    type: 2,
-    description:
-      'Leo vel orci porta non pulvinar neque laoreet. Sed blandit libero volutpat sed. Eu volutpat odio facilisis mauris. Pellentesque id nibh tortor id aliquet lectus.',
-    price: 175,
-    max: 4,
-  },
-];
+// const data = [
+//   {
+//     id: 0,
+//     name: 'Pav Bhaji (1 Plate)',
+//     type: 0,
+//     description:
+//       'Leo vel orci porta non pulvinar neque laoreet. Sed blandit libero volutpat sed. Eu volutpat odio facilisis mauris. Pellentesque id nibh tortor id aliquet lectus.',
+//     price: 45,
+//     max: 3,
+//   },
+//   {
+//     id: 1,
+//     name: 'Egg Roll (Serves 1)',
+//     type: 1,
+//     description:
+//       'Leo vel orci porta non pulvinar neque laoreet. Sed blandit libero volutpat sed. Eu volutpat odio facilisis mauris. Pellentesque id nibh tortor id aliquet lectus.',
+//     price: 35,
+//     max: 5,
+//   },
+//   {
+//     id: 2,
+//     name: 'Murgh Mussallam (4 pcs.)',
+//     type: 2,
+//     description:
+//       'Leo vel orci porta non pulvinar neque laoreet. Sed blandit libero volutpat sed. Eu volutpat odio facilisis mauris. Pellentesque id nibh tortor id aliquet lectus.',
+//     price: 175,
+//     max: 4,
+//   },
+// ];
 
-const OrderScene = ({navigation}) => {
+const OrderScene = ({navigation, route}) => {
+  const {restro} = route.params;
+
   const [scrollYPosition, setScrollYPosition] = useState(0);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [headerColor, setHeaderColor] = useState('transparent');
@@ -100,6 +102,7 @@ const OrderScene = ({navigation}) => {
   return (
     <ScrollView onScroll={handleOnScroll} stickyHeaderIndices={[1]}>
       <OutletHero
+        details={restro}
         yOffset={scrollYPosition}
         onParallaxImageScrolled={handleParallaxImageScrolled}
         headingTint={headingTint}
@@ -113,6 +116,7 @@ const OrderScene = ({navigation}) => {
           backgroundColor: headerColor,
         }}>
         <OutletHeader
+          name={restro.name}
           headerColor={headerColor}
           handleBack={handleBack}
           headingTint={headingTint}
@@ -121,7 +125,7 @@ const OrderScene = ({navigation}) => {
       </View>
 
       <SceneBuilder>
-        <MenuList data={data} />
+        <MenuList data={restro.menu} />
 
         <View style={{height: height / 5}} />
       </SceneBuilder>

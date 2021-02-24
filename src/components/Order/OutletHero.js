@@ -17,6 +17,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const {width, height} = Dimensions.get('screen');
 
 const OutletHero = ({
+  details,
   yOffset,
   onParallaxImageScrolled,
   headingTint,
@@ -132,7 +133,7 @@ const OutletHero = ({
                 textAlign: 'center',
               }}
               viewStyle={{margin: 10}}>
-              Indian Food Hotel
+              {details.name}
             </Heading>
           </View>
         </View>
@@ -188,7 +189,7 @@ const OutletHero = ({
               </TouchableOpacity>
               <Text
                 style={{fontSize: width / 30, marginTop: 20, color: GRAY.T6}}>
-                {data.address}
+                {details.address}
               </Text>
             </View>
           </View>

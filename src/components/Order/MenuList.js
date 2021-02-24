@@ -14,7 +14,7 @@ const MenuList = ({data}) => {
     <FlatList
       data={data}
       renderItem={({item}) => <MenuItem key={item.id} data={item} />}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item) => item._id.toString()}
       ItemSeparatorComponent={() => (
         <View
           style={{

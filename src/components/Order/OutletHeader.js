@@ -5,7 +5,13 @@ import {Heading} from '../Shared';
 
 const {width, height} = Dimensions.get('screen');
 
-const OutletHeader = ({headerColor, handleBack, headingTint, hasScrolled}) => {
+const OutletHeader = ({
+  headerColor,
+  handleBack,
+  headingTint,
+  hasScrolled,
+  name,
+}) => {
   return (
     <View style={{marginTop: 30, flexDirection: 'row'}}>
       <TouchableOpacity onPress={handleBack} activeOpacity={0.75}>
@@ -25,7 +31,7 @@ const OutletHeader = ({headerColor, handleBack, headingTint, hasScrolled}) => {
           color: `rgb(${headingTint},${headingTint},${headingTint})`,
         }}
         viewStyle={{margin: 10}}>
-        {hasScrolled ? 'Indian Food Hotel' : 'Welcome to'}
+        {hasScrolled ? name : 'Welcome to'}
       </Heading>
     </View>
   );

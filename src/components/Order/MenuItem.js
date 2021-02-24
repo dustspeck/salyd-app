@@ -125,7 +125,7 @@ const MenuItem = ({data}) => {
               </Text>
 
               <View style={{flexDirection: 'row', margin: 5}}>
-                {renderType(data.type)}
+                {renderType(1)}
               </View>
             </TouchableOpacity>
           </View>
@@ -168,7 +168,7 @@ const MenuItem = ({data}) => {
                 }}>
                 {ORDER.REPEATING_ITEM}
               </Text>
-              <CounterBtn max={data.max} />
+              <CounterBtn max={data.maxQuantity} />
             </View>
           </View>
         </View>

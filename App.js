@@ -9,7 +9,7 @@ import {GRAY} from './src/constants/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const httpLink = new createHttpLink({
-  uri: 'http://9a94f799e70c.ngrok.io',
+  uri: 'http://5af2d0127bb3.ngrok.io',
 });
 
 const authLink = setContext(async (_, {headers}) => {
