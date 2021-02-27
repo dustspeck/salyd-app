@@ -24,14 +24,21 @@ import {SceneLoader} from '../../components/Shared';
 import {TABLE_ID_LENGTH} from '../../constants/config';
 import {REGEX, SCAN} from '../../constants/strings';
 import {gql, useMutation} from '@apollo/client';
-import {StackActions} from '@react-navigation/native';
+import {StackActions, CommonActions} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('screen');
 
 const ScanScene = ({navigation}) => {
   // user info
-  const {user, email} = useContext(GlobalContext);
+  const {
+    user,
+    email,
+    token,
+    globalTableId,
+    updateTable,
+    updateRoom,
+  } = useContext(GlobalContext);
 
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
@@ -61,14 +68,25 @@ const ScanScene = ({navigation}) => {
   }, [navigation, navigating]);
   //
 
+  //Screen persistence
+  // useEffect(() => {
+  //   if (globalTableId)
+  //     navigation.dispatch(
+  //       CommonActions.reset({
+  //         index: 0,
+  //         routes: [
+  //           {
+  //             name: 'OrderScene',
+  //           },
+  //         ],
+  //       }),
+  //     );
+  // }, [globalTableId]);
+
   // table details
   const [tableId, setTableId] = useState(null);
   const [localRoomId, setLocalRoomID] = useState(null);
   const [submitting, isSubmitting] = useState(false);
-
-  const {token, globalTableId, updateTable, updateRoom} = useContext(
-    GlobalContext,
-  );
 
   //Mutation definition
   const NEW_ROOM = gql`
