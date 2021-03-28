@@ -26,7 +26,7 @@ const DineCard = ({data}) => {
                 textAlign: 'center',
                 color: GRAY.T5,
               }}>
-              {data.restroDetails.name.substr(0, 1)}
+              {data.restaurant.name.substr(0, 1)}
             </Text>
           </View>
           <View>
@@ -37,7 +37,7 @@ const DineCard = ({data}) => {
                 color: GRAY.T6,
                 fontSize: width / 26,
               }}>
-              {data.restroDetails.name}
+              {data.restaurant.name}
             </Text>
             <Text
               style={{
@@ -45,7 +45,7 @@ const DineCard = ({data}) => {
                 fontSize: width / 32,
                 color: GRAY.T6,
               }}>
-              {data.restroDetails.address}
+              {data.restaurant.address}
             </Text>
           </View>
         </View>
@@ -67,29 +67,30 @@ const DineCard = ({data}) => {
               marginBottom: 7,
             }}>
             {/* TODO: Fix Localization */}
-            {new Date(data.date).toLocaleString('en-US', {
+            {/* {new Date(data.date).toLocaleString('en-US', {
               dateStyle: 'medium',
               timeStyle: 'short',
-            })}
+            })} */}
+            {data.date}
           </Text>
         </View>
         <View style={{flexDirection: 'row'}}>
-          {data.menu.slice(0, OVERFLOW_MENU_ITEMS).map((menu, i) => (
+          {data.placedMenu.slice(0, OVERFLOW_MENU_ITEMS).map((menu, i) => (
             <View key={menu._id} style={{flexDirection: 'row'}}>
               <Text
                 style={{
                   fontSize: width / 35,
                   textDecorationLine: 'underline',
                 }}>
-                {menu.item.toUpperCase()}
+                {menu.name.toUpperCase()}
               </Text>
               <Text
                 style={{
                   fontSize: width / 35,
                 }}>
-                {` x ${menu.count}`}
+                {` x ${menu.quantity}`}
               </Text>
-              {i < data.menu.length - 1 && (
+              {i < data.placedMenu.length - 1 && (
                 <Text
                   style={{
                     fontSize: width / 35,
@@ -97,7 +98,7 @@ const DineCard = ({data}) => {
                   {' ,  '}
                 </Text>
               )}
-              {data.menu.length > OVERFLOW_MENU_ITEMS && (
+              {data.placedMenu.length > OVERFLOW_MENU_ITEMS && (
                 <Text
                   style={{
                     fontSize: width / 35,

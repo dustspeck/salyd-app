@@ -7,9 +7,11 @@ import {setContext} from '@apollo/client/link/context';
 import {ApolloProvider} from '@apollo/react-hooks';
 import {GRAY} from './src/constants/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {url} from './config.js';
 
+console.log(url, 'url');
 const httpLink = new createHttpLink({
-  uri: 'http://5af2d0127bb3.ngrok.io',
+  uri: url,
 });
 
 const authLink = setContext(async (_, {headers}) => {

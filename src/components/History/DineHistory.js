@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, Dimensions, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {gql, useMutation, useQuery} from '@apollo/client';
 
 import {requestDineHistory} from '../../utils/api';
 import {GlobalContext} from '../../context/GlobalState';
@@ -18,9 +19,36 @@ const DineHistory = ({count = 2, blink, refresh}) => {
   const [renderOrders, setRenderOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const RECENT_ORDERS = gql`
+    query RecentOrders {
+      orderHistoryUser {
+        orders {
+          _id
+          status
+          restaurant {
+            address
+            name
+            _id
+            ownerName
+          }
+          placedMenu {
+            _id
+            name
+            price
+            quantity
+          }
+          date
+        }
+      }
+    }
+  `;
+
+  //TODO: Implementat Lazy Query Instead
+  const {loading, error, data} = useQuery(RECENT_ORDERS);
+
   const getDineHistory = async () => {
     setIsLoading(true);
-    setRecentOrders(await requestDineHistory(token));
+    !loading && setRecentOrders(data.orderHistoryUser.orders);
     setIsLoading(false);
   };
 
@@ -30,7 +58,9 @@ const DineHistory = ({count = 2, blink, refresh}) => {
 
   useEffect(() => {
     if (recentOrders) {
-      setRenderOrders(recentOrders.splice(0, count));
+      console.log(recentOrders, 'orders');
+      //? Check for splice function here
+      setRenderOrders(recentOrders);
     } else {
       setRenderOrders(null);
     }
