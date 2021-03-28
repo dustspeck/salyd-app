@@ -61,5 +61,8 @@ buck-out/
 # congifs
 /congif
 
-#bundle
+# bundle
 *.bundle
+
+# Heap Profile
+*.hprof
