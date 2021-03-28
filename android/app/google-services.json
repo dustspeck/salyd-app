@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "36200265650",
+    "project_id": "salyd-app",
+    "storage_bucket": "salyd-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:36200265650:android:87797a7c090c8c9a7256ab",
+        "android_client_info": {
+          "package_name": "com.salyd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "36200265650-d03dnc9d0ph2pfumn095u3hiucr230uh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2lV0RTib7CfB53cYcS9Yp9FsFtewZCgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "36200265650-d03dnc9d0ph2pfumn095u3hiucr230uh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
