@@ -4,7 +4,7 @@ import {StatusBar} from 'react-native';
 import MainNavigator from './src/navigators/MainNavigator';
 import {ApolloClient, InMemoryCache, createHttpLink} from '@apollo/client';
 import {setContext} from '@apollo/client/link/context';
-import {ApolloProvider} from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/client/react';
 import {GRAY} from './src/constants/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {url} from './config.js';
