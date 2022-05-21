@@ -28,6 +28,19 @@ This project aims to bring a flawless contactless dinning experience, where the 
 - It also provides with the live order and payment status of respective table.
 - Push notification on successful placement of order and payment of the order.
 
+### Screenshots
+
+<div>
+<img src="dist/screenshots/ss_1.jpg" height="450px">
+<img src="dist/screenshots/ss_2.jpg" height="450px">
+<img src="dist/screenshots/ss_3.jpg" height="450px">
+<img src="dist/screenshots/ss_4.jpg" height="450px">
+<img src="dist/screenshots/ss_5.jpg" height="450px">
+<img src="dist/screenshots/ss_6.jpg" height="450px">
+<img src="dist/screenshots/ss_7.jpg" height="450px">
+<img src="dist/screenshots/ss_8.jpg" height="450px">
+</div>
+
 ### Built With
 
 <p float ="right">
